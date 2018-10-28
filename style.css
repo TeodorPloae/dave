@@ -1,0 +1,14 @@
+body {
+    background-color: yellowgreen;
+    
+}
+
+#main_form {
+    /* background-color: green; */
+    display: inline-grid;
+    align-content: center;
+}
+
+#main_form fieldset {
+    display: inline-grid;
+}

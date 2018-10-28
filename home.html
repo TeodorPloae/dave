@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script src="script.js"></script>
+</head>
+<body>
+    <form id = "main_form">
+        <fieldset id = "personal_info">
+            <legend>Personal information</legend>
+            
+            <label for="first_name">First name:</label> 
+            <input type="text" name="first_name" id="first_name" required=ture pattern="[a-zA-Z]+">
+
+            <label for="last_name">Last name:</label> 
+            <input type="text" name="last_name" id="last_name" required=ture>
+
+            <label for="DOB">Date of birth:</label>
+            <input type="date" name="birthdate" id="DOB">
+        </fieldset>
+        <fieldset>
+            <legend>Account information</legend>
+
+            <label for="username">Username:</label> 
+            <input type="text" name="username" id="username" required=ture>
+
+            <label for="password">Password:</label> 
+            <input type="password" name="password" id="password" required=ture>
+        </fieldset>
+    </form>
+</body>
+</html>
