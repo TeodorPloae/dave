@@ -6,7 +6,7 @@
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
-    <script src="script.js"></script>
+    
 </head>
 <body>
     <form id = "main_form">
@@ -14,28 +14,49 @@
             <li class="tab active"><a href="#signup">Sign Up</a></li>
             <li class="tab"><a href="#login">Log In</a></li>
         </ul>
-        <fieldset id = "personal_info">
-            <legend>Personal information</legend>
-            
-            <label for="first_name">First name:</label> 
-            <input type="text" name="first_name" id="first_name" required = ture pattern = "[a-zA-Z]+">
 
-            <label for="last_name">Last name:</label> 
-            <input type="text" name="last_name" id="last_name" required = ture>
+        <div class="tab-content">
 
-            <label for="DOB">Date of birth:</label>
-            <input type="date" name="birthdate" id="DOB">
-        </fieldset>
-        <fieldset>
-            <legend>Account information</legend>
+            <fieldset id = "sign-up">
+                <legend>Sign up</legend>
+                
+                <label for="first_name">First name:</label> 
+                <input type="text" name="first_name" id="first_name" required = ture pattern = "[a-zA-Z]+">
 
-            <label for="username">Username:</label> 
-            <input type="text" name="username" id="username" required=ture>
+                <label for="last_name">Last name:</label> 
+                <input type="text" name="last_name" id="last_name" required = ture>
 
-            <label for="password">Password:</label> 
-            <input type="password" name="password" id="password" required=ture>
-        </fieldset>
-        <button type="submit" class="button"/>Submit</button>
+                <label for="DOB">Date of birth:</label>
+                <input type="date" name="birthdate" id="DOB">
+
+                <label for="username">Username:</label> 
+                <input type="text" name="username" id="username" required=ture>
+
+                <label for="password">Password:</label> 
+                <input type="password" name="password" id="password" required=ture>
+
+                <label for="password">Confirm password:</label> 
+                <input type="password" name="confirm_password" id="confirm_password" required=ture>
+
+                <button type="submit" class="button"/>Submit</button>
+            </fieldset>
+
+            <fieldset id = "login">
+                <legend>Log In</legend>
+
+                <label for="username">Username:</label> 
+                <input type="text" name="username" id="username" required=ture>
+
+                <label for="password">Password:</label> 
+                <input type="password" name="password" id="password" required=ture>
+
+                <button type="logins" class="button"/>Log In</button>
+
+            </fieldset>
+
+        </div> <!-- end tab-content -->
+        
     </form>
 </body>
+<script language="JavaScript" type="text/javascript" src="script.js"></script>
 </html>

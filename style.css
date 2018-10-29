@@ -9,7 +9,7 @@ body {
     align-content: center;
 }
 
-#main_form fieldset {
+.tab-content fieldset {
     display: inline-grid;
 }
 
@@ -36,4 +36,10 @@ body {
 
 .tab {
     background-color: #1ab188;
+}
+
+
+
+.tab a {
+    background-color: blue;
 }
