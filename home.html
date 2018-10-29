@@ -10,14 +10,18 @@
 </head>
 <body>
     <form id = "main_form">
+        <ul class="tab-group">
+            <li class="tab active"><a href="#signup">Sign Up</a></li>
+            <li class="tab"><a href="#login">Log In</a></li>
+        </ul>
         <fieldset id = "personal_info">
             <legend>Personal information</legend>
             
             <label for="first_name">First name:</label> 
-            <input type="text" name="first_name" id="first_name" required=ture pattern="[a-zA-Z]+">
+            <input type="text" name="first_name" id="first_name" required = ture pattern = "[a-zA-Z]+">
 
             <label for="last_name">Last name:</label> 
-            <input type="text" name="last_name" id="last_name" required=ture>
+            <input type="text" name="last_name" id="last_name" required = ture>
 
             <label for="DOB">Date of birth:</label>
             <input type="date" name="birthdate" id="DOB">
@@ -31,6 +35,7 @@
             <label for="password">Password:</label> 
             <input type="password" name="password" id="password" required=ture>
         </fieldset>
+        <button type="submit" class="button"/>Submit</button>
     </form>
 </body>
 </html>
