@@ -1,0 +1,60 @@
+body {
+  background: #c1bdba;
+  font-family: "Lucida Console", Monaco, monospace;
+  display: flex;
+}
+
+.tab {
+  text-decoration: none;
+  color: #1ab188;
+  transition: 0.5s ease;
+}
+.tab:hover {
+  background: #0d5844;
+}
+
+#main_form {
+  display: flex;
+  flex-basis: 50%;
+  flex-direction: column;
+  background: rgba(19, 35, 47, 0.9);
+  padding: 40px;
+  max-width: 600px;
+  margin: 40px auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+}
+
+.tab-group {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.button {
+  border-radius: 15px;
+  padding: 15px 15px;
+  font-size: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: #1ab188;
+  color: #ffffff;
+  transition: all 0.5s ease;
+}
+.button:hover {
+  background: #1dc799;
+  cursor: pointer;
+}
+
+.tab a {
+  display: block;
+}
+
+.inactive {
+  background: #0d5844;
+}
+
+/*# sourceMappingURL=sass.css.map */

@@ -1,0 +1,52 @@
+#login {
+    background-color: #13232f;
+    border: 2px solid white;
+    color: white;
+    border-radius: 15px;
+    display: grid;
+    grid-row-gap: 5px;
+    grid-column-gap: 10px;
+    grid-template-areas:
+    '. username-label .'
+    '. username .'
+    '. password-label .'
+    '. password .'
+    '. Login-button .'
+    ;
+    justify-items: center;
+}
+
+#login label {
+    justify-self: center;
+    margin: 5px;
+}
+
+#login input {
+    margin: 5px;
+    border-radius: 15px;
+    background-color: #13232f;
+    color: white;
+}
+
+#login label:nth-of-type(1) {
+    grid-area: username-label;
+}
+
+#login-username {
+    grid-area: username;
+}
+
+#login label:nth-of-type(2) {
+    grid-area: password-label;
+}
+
+#login-password {
+    grid-area: password;
+}
+
+#login-submit {
+    grid-area: Login-button;
+    width: 60%;
+    font-size: 100%;
+    margin: 5px;
+}

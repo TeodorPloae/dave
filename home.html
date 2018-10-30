@@ -5,54 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="sass.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="FormStyles/registerGridStyle.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="FormStyles/loginGridStyle.css" />
     
 </head>
 <body>
     <form id = "main_form">
         <ul class="tab-group">
-            <li class="tab active button"><a href="#signup">Sign Up</a></li>
-            <li class="tab button"><a href="#login">Log In</a></li>
+            <li id = "sign_up_element" class="tab button"><a>Sign Up</a></li>
+            <li id = "login_element" class="tab button inactive"><a>Log In</a></li>
         </ul>
 
         <div class="tab-content">
-
-            <fieldset id = "sign-up">
-                <legend>Sign up</legend>
-                
+            <div id = "sign-up">
                 <label for="first_name">First name:</label> 
                 <input type="text" name="first_name" id="first_name" required = ture pattern = "[a-zA-Z]+">
 
                 <label for="last_name">Last name:</label> 
                 <input type="text" name="last_name" id="last_name" required = ture>
 
-                <label for="DOB">Date of birth:</label>
-                <input type="date" name="birthdate" id="DOB">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email">
 
-                <label for="username">Username:</label> 
-                <input type="text" name="username" id="username" required=ture>
+                <label for="sign-up-username">Username:</label> 
+                <input type="text" name="username" id="sign-up-username" required=ture>
 
-                <label for="password">Password:</label> 
-                <input type="password" name="password" id="password" required=ture>
+                <label for="sign-up-password">Password:</label> 
+                <input type="password" name="password" id="sign-up-password" required=ture>
 
-                <label for="password">Confirm password:</label> 
-                <input type="password" name="confirm_password" id="confirm_password" required=ture>
+                <label for="sign-up-password">Confirm password:</label> 
+                <input type="password" name="confirm_password" id="sign-up-confirm_password" required=ture>
 
-                <button type="submit" class="button"/>Submit</button>
-            </fieldset>
+                <button type="submit" class="button" id="sign-up-submit"/>Submit</button>
+            </div>
 
-            <fieldset id = "login">
-                <legend>Log In</legend>
+            <div id = "login">
+                <label for="login-username">Username:</label> 
+                <input type="text" name="username" id="login-username" required=ture>
 
-                <label for="username">Username:</label> 
-                <input type="text" name="username" id="username" required=ture>
+                <label for="login-password">Password:</label> 
+                <input type="password" name="password" id="login-password" required=ture>
 
-                <label for="password">Password:</label> 
-                <input type="password" name="password" id="password" required=ture>
+                <button type="submit" class="button" id="login-submit"/>Log In</button>
 
-                <button type="logins" class="button"/>Log In</button>
-
-            </fieldset>
+            </div>
 
         </div> <!-- end tab-content -->
         

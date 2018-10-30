@@ -1,0 +1,75 @@
+$body-bg: #c1bdba;
+$form-bg: #13232f;
+$white: #ffffff;
+
+$main: #1ab188;
+$main-light: lighten($main,5%);
+$main-dark: darken($main,20%);
+
+$gray-light: #a0b3b0;
+$gray: #ddd;
+
+$thin: 300;
+$normal: 400;
+$bold: 600;
+$br: 4px;
+
+body {
+    background:$body-bg;
+    font-family: "Lucida Console", Monaco, monospace;
+    display: flex;
+}
+
+.tab {
+    text-decoration:none;
+    color:$main;
+    transition:.5s ease;
+    &:hover {
+      background:$main-dark;
+    }
+  }
+
+#main_form {
+    display: flex;
+    flex-basis: 50%;
+    flex-direction: column;
+    background:rgba($form-bg,.9);
+    padding: 40px;
+    max-width:600px;
+    margin:40px auto;
+    border-radius:$br;
+    box-shadow:0 4px 10px 4px rgba($form-bg,.3);
+}
+
+
+.tab-group {
+    list-style:none;
+    padding:0;
+    margin:0 0 40px 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.button {
+    border-radius:15px;
+    padding:15px 15px;
+    font-size:2rem;
+    font-weight:$bold;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    background:$main;
+    color:$white;
+    transition:all.5s ease;
+    &:hover {
+      background:$main-light;
+      cursor: pointer;
+    }
+  }
+
+.tab a {
+    display: block;
+}
+
+.inactive {
+    background:$main-dark;
+}

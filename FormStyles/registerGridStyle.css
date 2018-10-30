@@ -1,0 +1,83 @@
+#sign-up {
+    background-color: #13232f;
+    border: 2px solid white;
+    color: white;
+    border-radius: 15px;
+    display: grid;
+    grid-row-gap: 5px;
+    grid-column-gap: 10px;
+    grid-template-areas:
+    'FN-label LN-label email-label'
+    'FN LN email'
+    'User-label Pass-label CPass-label'
+    'User Pass CPass'
+    '. Submit .';
+    justify-items: center;
+}
+
+#sign-up label {
+    justify-self: center;
+    margin: 5px;
+}
+
+#sign-up input {
+    margin: 5px;
+    border-radius: 15px;
+    background-color: #13232f;
+    color: white;
+}
+
+#first_name {
+    grid-area: FN;
+}
+
+#sign-up label:nth-of-type(1) {
+    grid-area: FN-label;
+}
+
+#last_name {
+    grid-area: LN;
+}
+
+#sign-up label:nth-of-type(2) {
+    grid-area: LN-label;
+}
+
+#email {
+    grid-area: email;
+}
+
+#sign-up label:nth-of-type(3) {
+    grid-area: email-label;
+}
+
+#sign-up-username{
+    grid-area: User;
+}
+
+#sign-up label:nth-of-type(4) {
+    grid-area: User-label;
+}
+
+#sign-up-password{
+    grid-area: Pass;
+}
+
+#sign-up label:nth-of-type(5) {
+    grid-area: Pass-label;
+}
+
+#confirm_password{
+    grid-area: CPass;
+}
+
+#sign-up label:nth-of-type(6) {
+    grid-area: CPass-label;
+}
+
+#sign-up-submit{
+    grid-area: Submit;
+    margin: 5px;
+    width: 60%;
+    font-size: 100%;
+}
