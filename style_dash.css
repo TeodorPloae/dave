@@ -23,11 +23,12 @@
     border: 2px solid black;
     border-radius: 15px;
     margin: 5px;
-    padding: 2%;
+    padding: 10px;
     display: grid;
     grid-template-areas: 
     "a . . ."
     "b b b c";
+    grid-row-gap: 10px;
 }
 
 #logout_button{
@@ -35,9 +36,10 @@
     border-radius: 15px;
     margin: 2.5px;
     max-width: 40%;
+    height: 100%;
+    box-shadow: 5px 5px 6px #46634a;
+    
 }
-
-
 
 .db_view{
     grid-area: b;
@@ -52,6 +54,8 @@
     display: flex;
     justify-content: center;
     padding-top: 50px;
+    /* box-shadow: 5px 5px black; */
+    box-shadow: 5px 5px 6px #43434c;
 }
 
 .db_view_header{
@@ -83,6 +87,7 @@
     padding-top: 50px;
     color: white;
     font-family: "Lucida Console", Monaco, monospace;
+    box-shadow: 5px 5px 6px #43434c;
 }
 
 .news .news_header{
@@ -99,12 +104,6 @@
     margin: 10px; 
     height: 80%;
     width: 100%;
-}
-
-
-
-.news_container .update_list{
-
 }
 
 #download_button{
