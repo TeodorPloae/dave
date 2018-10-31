@@ -82,18 +82,8 @@
     font-size: 100%;
 }
 
-@media only screen and (max-width: 770px) {
-    #sign_up_element {
-        transform: scale(0.5);
-        text-align: center;
-    }
-    
-    #login_element {
-        transform: scale(0.5);
-        text-align: center;
-    }
 
-@media only screen and (max-width: 680px) {
+@media only screen and (max-width: 770px) {
     #sign-up {
       grid-template-areas:
       'FN-label LN-label'
@@ -103,6 +93,15 @@
       'Pass-label CPass-label'
       'Pass CPass'
       'Submit Submit';
+    }
+    #sign_up_element {
+        transform: scale(0.5);
+        text-align: center;
+    }
+    
+    #login_element {
+        transform: scale(0.5);
+        text-align: center;
     }
   }
 
