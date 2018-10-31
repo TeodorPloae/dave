@@ -1,7 +1,7 @@
 .button {
     border:0;
     outline:none;
-    border-radius:0;
+    border-radius: 15px;
     padding:10px 10px;
     font-size:1rem;
     font-weight: 600;
@@ -11,7 +11,12 @@
     color: white;
     transition:all.5s ease;
     -webkit-appearance: none;
-    border-radius: 15px;
+}
+
+.button:hover {
+    background: #1dc799;
+    cursor: pointer;   
+    box-shadow: 5px 5px 6px #46634a;
 }
 
 .body{
@@ -29,15 +34,15 @@
     "a . . ."
     "b b b c";
     grid-row-gap: 10px;
+    height: 100%;
 }
 
 #logout_button{
     grid-area: a;
-    border-radius: 15px;
     margin: 2.5px;
-    max-width: 40%;
+    /* max-width: 40%; */
+    width: 150px;
     height: 100%;
-    box-shadow: 5px 5px 6px #46634a;
     
 }
 
@@ -71,7 +76,7 @@
     border: 2px solid white;
     border-radius: 15px;
     margin: 10px; 
-    height: 80%;
+    height: calc( 100% - 70px );
     width: 100%;
 }
 
@@ -101,15 +106,33 @@
 .news_container{
     border: 2px solid white;
     border-radius: 15px;
-    margin: 10px; 
-    height: 80%;
+    margin: 10px;
+    height: calc( 100% - 70px );
     width: 100%;
 }
 
 #download_button{
     position: absolute;
-    bottom: 15px;
+    bottom: 0;
     margin: 10px;
     display: block;
 
+}
+
+@media only screen and (max-width: 1024px) {
+    .container {
+        grid-template-areas: 
+        "a"
+        "b"
+        "c";
+    }
+    .db_view_container{
+        height: 95%;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .news_container {
+    height: calc( 100% - 100px );
+    }
 }
