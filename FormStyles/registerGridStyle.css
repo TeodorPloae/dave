@@ -81,3 +81,60 @@
     width: 60%;
     font-size: 100%;
 }
+
+@media only screen and (max-width: 770px) {
+    #sign_up_element {
+        transform: scale(0.5);
+        text-align: center;
+    }
+    
+    #login_element {
+        transform: scale(0.5);
+        text-align: center;
+    }
+
+@media only screen and (max-width: 680px) {
+    #sign-up {
+      grid-template-areas:
+      'FN-label LN-label'
+      'FN LN'
+      'User-label email-label'
+      'User email'
+      'Pass-label CPass-label'
+      'Pass CPass'
+      'Submit Submit';
+    }
+  }
+
+@media only screen and (max-width: 480px) {
+    #sign-up {
+      grid-template-areas:
+      'FN-label'
+      'FN'
+      'LN-label'
+      'LN'
+      'User-label'
+      'User'
+      'email-label'
+      'email'
+      'Pass-label'
+      'Pass'
+      'CPass-label'
+      'CPass'
+      'Submit';
+    }
+  }
+
+  @media only screen and (min-width: 1700px) {
+      #main_form {
+          transform: scale(2);
+          margin-top: 230px;
+      }
+  }
+
+  @media only screen and (min-width: 4600px) {
+    #main_form {
+        transform: scale(3);
+        margin-top: 460px;
+    }
+}
