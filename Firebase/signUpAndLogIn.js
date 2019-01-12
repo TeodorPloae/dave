@@ -6,7 +6,7 @@ const auth = firebase.auth();
 
 class LogInData {
     constructor(){
-        this.email = document.getElementById("email-username").value;
+        this.email = document.getElementById("login-email").value;
         this.password = document.getElementById("login-password").value;
     }
 
@@ -42,6 +42,7 @@ class SignUpData {
 }
 
 sign_up_submit.addEventListener('click', e => {
+    
     let userData = new SignUpData();
 
     if (!userData.isEmailValid()){
@@ -54,16 +55,36 @@ sign_up_submit.addEventListener('click', e => {
         alert("The Passwords dont match!");
         return;
     }
-
-    const promise = auth.createUserWithEmailAndPassword(userData.email, userData.password);
-
+    const promise = auth.createUserWithEmailAndPassword(userData.email, userData.password)
+    
     promise.catch(e => console.log(e.message));
+
+    var userId = firebase.auth().currentUser.uid;
+    firebase.database().ref('users/' + userId).set({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        username: userData.username
+      });
+
+    window.location.pathname = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/dashboard.html';
 });
 
 log_in_submit.addEventListener('click', e => {
-    let userData = new LogInData();
+    const promise = auth.signInWithEmailAndPassword("ceapa@123.com", "ceapa123");
 
-    const promise = auth.createUserWithEmailAndPassword(userData.email, userData.password);
+    var userId = firebase.auth().currentUser.uid;
+    firebase.database().ref('users/' + userId).set({
+        firstName: "Ardeleanu",
+        lastName: "Angel",
+        username: "anggabard"
+      });
+
+    
+
+    //sessionStorage.setItem("email", "ceapa@123.com");
+    // let userData = new LogInData();
 
     promise.catch(e => console.log(e.message));
+
+    window.location.pathname = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/dashboard.html';
 })
