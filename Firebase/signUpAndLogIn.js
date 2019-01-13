@@ -55,36 +55,37 @@ sign_up_submit.addEventListener('click', e => {
         alert("The Passwords dont match!");
         return;
     }
-    const promise = auth.createUserWithEmailAndPassword(userData.email, userData.password)
-    
-    promise.catch(e => console.log(e.message));
 
-    var userId = firebase.auth().currentUser.uid;
-    firebase.database().ref('users/' + userId).set({
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        username: userData.username
-      });
-
-    window.location.pathname = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/dashboard.html';
-});
+    auth.createUserWithEmailAndPassword(userData.email, userData.password)
+        .then(function success(user) {
+            firebase.database().ref('users/' + user.user.uid).set({
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                username: userData.username
+                })
+                .then(function() {
+                    window.location = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/dashboard.html';
+                })
+                .catch(e => console.log(e.message));
+        })
+        .catch(e => console.log(e.message));
+})
 
 log_in_submit.addEventListener('click', e => {
-    const promise = auth.signInWithEmailAndPassword("ceapa@123.com", "ceapa123");
+        auth.signInWithEmailAndPassword("test@info.com", "ceapa123")
+            .then(function(){
+                window.location = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/dashboard.html';
+            })
+            .catch(e => console.log(e.message));
 
-    var userId = firebase.auth().currentUser.uid;
-    firebase.database().ref('users/' + userId).set({
-        firstName: "Ardeleanu",
-        lastName: "Angel",
-        username: "anggabard"
-      });
+    // var userId = firebase.auth().currentUser.uid;
+    // firebase.database().ref('users/' + userId).set({
+    //     firstName: "Ardeleanu",
+    //     lastName: "Angel",
+    //     username: "anggabard"
+    //   });
 
-    
 
     //sessionStorage.setItem("email", "ceapa@123.com");
     // let userData = new LogInData();
-
-    promise.catch(e => console.log(e.message));
-
-    window.location.pathname = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/dashboard.html';
 })

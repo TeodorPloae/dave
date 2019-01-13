@@ -1,15 +1,14 @@
-class UserData {
-    constructor(userId){
-        dbUser = firebase.database().ref('/users/' + userId).once('value');
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        sessionStorage.setItem("uid", user.uid);
+        firebase.database().ref('/users/' + user.uid).once('value')
+            .then(function (snapshot) {
+                sessionStorage.setItem("firstName", snapshot.val().firstName);
+                sessionStorage.setItem("lastName", snapshot.val().lastName);
+                sessionStorage.setItem("username", snapshot.val().username);
 
-        this.firstName = dbUser.val().firstName;
-        this.lastName = dbUser.val().lastName;
-        this.username = dbUser.val().username;
+                document.getElementById("logout_button").innerText = "Hello " + sessionStorage.getItem("username");
+            })
+            .catch(e => console.log(e.message));
     }
-}
-
-let theUser = new UserData(firebase.auth().currentUser.uid);
-
-document.getElementById("hello_text").innerText = "Hello " + theUser.username;
-
-//current user is null <==
+});
