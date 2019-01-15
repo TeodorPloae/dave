@@ -137,7 +137,21 @@
 
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1024px) and (min-width: 512px){
+    .container {
+        grid-template-areas: 
+        "d a"
+        "b b"
+        "c c";
+    }
+    .db_view_container{
+        height: 95%;
+    }
+    
+}
+
+@media only screen and (max-width: 512px) {
+
     .container {
         grid-template-areas: 
         "d"

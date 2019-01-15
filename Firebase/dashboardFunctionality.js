@@ -11,7 +11,7 @@ logout_button.addEventListener('click', e => {
         .then(function () {
             //logout extra functionality
             sessionStorage.clear();
-            window.location = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/home.html';
+            window.location = 'home.html';
         })
         .catch(e => console.log(e.message));
 });

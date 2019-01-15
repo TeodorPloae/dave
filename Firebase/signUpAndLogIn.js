@@ -64,7 +64,7 @@ sign_up_submit.addEventListener('click', e => {
                 username: userData.username
                 })
                 .then(function() {
-                    window.location = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/dashboard.html';
+                    window.location = 'dashboard.html';
                 })
                 .catch(e => console.log(e.message));
         })
@@ -74,7 +74,7 @@ sign_up_submit.addEventListener('click', e => {
 log_in_submit.addEventListener('click', e => {
         auth.signInWithEmailAndPassword("test@info.com", "ceapa123")
             .then(function(){
-                window.location = '/home/anggbard/UAIC/An3/sem1/CLIW/dave/dashboard.html';
+                window.location = 'dashboard.html';
             })
             .catch(e => console.log(e.message));
 
