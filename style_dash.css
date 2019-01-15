@@ -31,7 +31,7 @@
     padding: 10px;
     display: grid;
     grid-template-areas: 
-    "a . . ."
+    ". d . a"
     "b b b c";
     grid-row-gap: 10px;
     height: 100%;
@@ -43,7 +43,25 @@
     /* max-width: 40%; */
     width: 150px;
     height: 100%;
-    
+    margin-left: auto;
+} 
+
+#hello_text{
+    grid-area: d;
+    text-align: center;
+    background-color: #13232f; 
+    color: white;
+    border-radius: 15px;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 25px;
+    padding: 5px;
+    margin: 5px;
+    box-shadow: 5px 5px 6px #43434c;
+
+}
+
+.container h1{
+    margin: 0;
 }
 
 .db_view{
@@ -122,6 +140,7 @@
 @media only screen and (max-width: 1024px) {
     .container {
         grid-template-areas: 
+        "d"
         "a"
         "b"
         "c";
@@ -129,6 +148,7 @@
     .db_view_container{
         height: 95%;
     }
+    
 }
 
 @media only screen and (max-width: 400px) {

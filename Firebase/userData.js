@@ -7,7 +7,7 @@ firebase.auth().onAuthStateChanged(user => {
                 sessionStorage.setItem("lastName", snapshot.val().lastName);
                 sessionStorage.setItem("username", snapshot.val().username);
 
-                document.getElementById("logout_button").innerText = "Hello " + sessionStorage.getItem("username");
+                document.getElementById("hello_text").innerText = "Hello " + sessionStorage.getItem("username");
             })
             .catch(e => console.log(e.message));
     }
