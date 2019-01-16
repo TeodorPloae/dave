@@ -11,6 +11,7 @@ class LogInData {
     }
 
 
+
 }
 
 class SignUpData {
@@ -64,19 +65,30 @@ sign_up_submit.addEventListener('click', e => {
                 username: userData.username
                 })
                 .then(function() {
-                    window.location = 'dashboard.html';
+                   window.location = 'dashboard.html';
                 })
                 .catch(e => console.log(e.message));
         })
-        .catch(e => console.log(e.message));
+        .catch(e => {
+            alert(e.message);
+            return;
+        }
+        );
 })
 
 log_in_submit.addEventListener('click', e => {
-        auth.signInWithEmailAndPassword("test@info.com", "ceapa123")
+
+    let logInData = new LogInData();
+
+        auth.signInWithEmailAndPassword(logInData.email, logInData.password)
             .then(function(){
                 window.location = 'dashboard.html';
             })
-            .catch(e => console.log(e.message));
+            .catch(e => {
+                alert(e.message);
+                return;
+            }
+            );
 
     // var userId = firebase.auth().currentUser.uid;
     // firebase.database().ref('users/' + userId).set({
