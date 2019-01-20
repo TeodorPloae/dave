@@ -6,6 +6,7 @@ firebase.auth().onAuthStateChanged(user => {
                 sessionStorage.setItem("firstName", snapshot.val().firstName);
                 sessionStorage.setItem("lastName", snapshot.val().lastName);
                 sessionStorage.setItem("username", snapshot.val().username);
+                //creare obiect user
 
                 document.getElementById("hello_text").innerText = "Hello " + sessionStorage.getItem("username");
             })
