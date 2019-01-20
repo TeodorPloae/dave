@@ -21,11 +21,6 @@ class SignUpData {
         this.email = document.getElementById("email").value;
 
         this.generateKey();
-
-        //this.privateKey = this.generateKey().then( (res) => {
-        //return res;
-        //});
-
     }
 
     isEmailValid() {
@@ -46,8 +41,6 @@ class SignUpData {
     }
 
     async generateKey() {
-        var privateKeyExport;
-        var publicKeyExport;
         var algorithm = {
             name: "RSA-OAEP",
             modulusLength: 2048,
@@ -105,12 +98,10 @@ sign_up_submit.addEventListener('click', e => {
                 lastName: userData.lastName,
                 username: userData.username,
                 privateKey: userData.privateKey,
-                publickey: userData.publicKey
+                publicKey: userData.publicKey
             })
                 .then(function () {
                     window.location = 'dashboard.html';
-                    console.log("success");
-
                 })
                 .catch(e => console.log(e.message));
         })
