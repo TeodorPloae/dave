@@ -3,11 +3,11 @@ var theUser;
 class UserData{
     constructor(uid){
         this.uid =  uid;
-        this.importKey("privateKey");
-        this.importKey("publicKey");
+        this.importKeys();
+
     }
 
-    async importKey(type){
+    async importKeys(){
         var algorithm = {
             name: "RSA-OAEP",
             hash: {
@@ -15,26 +15,28 @@ class UserData{
             }
         };
         
-        var purpose = "";
-        if (type == "publicKey") {
-            purpose = "encrypt";
-        } else {
-            purpose = "decrypt";
-        }
         
         await firebase.database().ref('/users/' + this.uid).once('value')
             .then( async (snapshot) => {
-                await window.crypto.subtle.importKey(
-                    "jwk",
-                    snapshot.val()[type],
-                    algorithm,
-                    false,
-                    [purpose]
-                    )
-                    .then( (key) => {
-                        this[type] = key;
-                    })
+                
+                this.publicKey = JSON.stringify(snapshot.val().publicKey);
+                console.log(this.publicKey);
+
+                    await window.crypto.subtle.importKey(
+                        "jwk",
+                        snapshot.val().privateKey,
+                        algorithm,
+                        false,
+                        ["decrypt"]
+                        )
+                        .then( (key) => {
+                            this.privateKey = key;
+                        }) 
             })
+    }
+
+    setEmail(email){
+        this.email = email;
     }
 }
 
@@ -47,6 +49,7 @@ firebase.auth().onAuthStateChanged(async user => {
                 sessionStorage.setItem("lastName", snapshot.val().lastName);
                 sessionStorage.setItem("username", snapshot.val().username);
 
+                User.setEmail(user.email);
                 document.getElementById("hello_text").innerText = "Hello " + sessionStorage.getItem("username");
             })
             .catch(e => console.log(e.message));

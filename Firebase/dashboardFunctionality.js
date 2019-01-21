@@ -20,8 +20,8 @@ download_button.addEventListener('click', e => {
 })
 
 function loadData(theUser) {
-    download_button.style.backgroundColor = "#1ab188"
-    console.log(theUser);
+    //generateAESpart()
+
     storage.ref('thefile.js').getDownloadURL()
         .then(function (url) {
             link.setAttribute('download', 'thefile.js');
@@ -32,21 +32,18 @@ function loadData(theUser) {
             xhr.onload = function (event) {
                 var blob = xhr.response;
 
-                //link.setAttribute('href', window.URL.createObjectURL(blob));
-
                 const reader = new FileReader();
 
                 reader.addEventListener('loadend', (e) => {
                     var text = e.srcElement.result;
 
-                    text = text.replace("{name}", sessionStorage.getItem("username"));
-                    text = text.replace("{key}", theUser.uid);
+                    text = text.replace("{email}", theUser.email);
+                    text = text.replace("{RSAPublicKey}",theUser.publicKey);
 
                     link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
                     link.setAttribute('download', 'theFile2.js');
                 });
 
-                // Start reading the blob as text.
                 reader.readAsText(blob);
             };
 
@@ -54,4 +51,7 @@ function loadData(theUser) {
             xhr.send();
         })
         .catch(e => console.log(e.message));
+    download_button.style.backgroundColor = "#1ab188";
+
+    
 }
