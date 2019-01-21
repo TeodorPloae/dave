@@ -1,4 +1,5 @@
-window.isUser = false;
+var theUser;
+
 class UserData{
     constructor(uid){
         this.uid =  uid;
@@ -37,7 +38,7 @@ class UserData{
     }
 }
 
- firebase.auth().onAuthStateChanged(async user => {
+firebase.auth().onAuthStateChanged(async user => {
     if (user) {
         var User = new UserData(user.uid);
         await firebase.database().ref('/users/' + user.uid).once('value')
@@ -51,10 +52,7 @@ class UserData{
             .catch(e => console.log(e.message));
     }
 
-    loadData(User);
+    //window.User = User;
+    theUser = User;
+    loadData(theUser);
 });
-
-function loadData(User){
-    //do stuff with user data
-    console.log(User);
-}

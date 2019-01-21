@@ -134,7 +134,7 @@
     bottom: 0;
     margin: 10px;
     display: block;
-
+    background-color: grey;
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 512px){
