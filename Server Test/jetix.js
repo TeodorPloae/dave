@@ -23,9 +23,6 @@ formular.addEventListener('submit', (e) => {
         },
     body: JSON.stringify(myJson)
 })
-     
-     
-
   });
 
 
