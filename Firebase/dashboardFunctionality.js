@@ -24,6 +24,7 @@ download_button.addEventListener('click', e => {
 function loadData(theUser) {
     //generateAESpart()
 
+    console.log(theUser.email, theUser.publicKey)
     storage.ref('thefile.js').getDownloadURL()
         .then(function (url) {
             link.setAttribute('download', 'thefile.js');

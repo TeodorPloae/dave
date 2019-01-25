@@ -53,7 +53,7 @@ class SignUpData {
         await window.crypto.subtle.generateKey(
             algorithm,
             true,
-            ["encrypt", "decrypt"]
+            ["encrypt", "decrypt", "wrapKey", "unwrapKey"]
         )
             .then(async (result) => {
 

@@ -20,7 +20,7 @@ class UserData{
             .then( async (snapshot) => {
                 
                 this.publicKey = JSON.stringify(snapshot.val().publicKey);
-                console.log(this.publicKey);
+                //console.log(JSON.parse(this.publicKey));
 
                     await window.crypto.subtle.importKey(
                         "jwk",
