@@ -42,6 +42,9 @@ formular.addEventListener('submit', async (e) => {
             mode: "no-cors",
             body: JSON.stringify(JSONresult)
         })
+        .then(function (response) {
+            console.log("Json sent!", response);
+        })
 });
 
 async function generateAESKey() {
