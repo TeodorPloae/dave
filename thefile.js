@@ -1,36 +1,34 @@
 var formular = document.querySelector('form');
 
-formular.addEventListener('submit', (e) => {
+formular.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+    var key = await generateAESKey();
+
+    var iv = window.crypto.getRandomValues(new Uint8Array(16));
+
+    JSONresult = {
+        "userData": {},
+        "ownerData": {}
+    };
+
+    var encrdata = await encryptOwnerData({RSAPublicKey}, iv, key);
+
+    var encryptedUID = {uid};
+
+    JSONresult["ownerData"] = encrdata;
+    JSONresult["ownerData"]["uid"] = uidJsonToArray(encryptedUID);
+    JSONresult["ownerData"]["siteName"] = "jetix";
+
     var data = new FormData(e.target);
 
-    var JSONresult = {};
-
-    var key = generateAESKey();
-
-    iv = crypto.getRandomValues(new Uint8Array(16));
-
-    JSONresult["ownerData"] = encryptUserData("crypto@user.com",
-    "{\"alg\":\"RSA-OAEP-256\",\"e\":\"AQAB\",\"ext\":true,\"key_ops\":[\"encrypt\"],\"kty\":\"RSA\",\"n\":\"wlvIWuBpxB84Pp8fXD_Ja5oza4jrtEUlgtTZeAbRyhBCjE6MhuNQPcDU45sbvX4GwcDPQbnsaSFwr--V0bB7woe98tFsXeTGD_uQv7V7evPwU079GE--lHRTzsDrfcjBujDc_-p5prIU4VAqsI6-iVGG_Z4IFNhy60AsWkdRbu91yMLGxOSU-7Ztt7PtkG5_-swIRgwVHQdr2wpVrdB1qjoyk5QAwN5jglaNa_h0syp4D-AiVP_7o6SkXLr0OBnbwv2dMuPw8ELjty1FZzdQsQ3h_axwt6U6Kcsond2h9OWwEb_A_Jz8QrEtMDlONJX8Uj2CHQi8d2y8pi2_ml3iLQ\"}"
-    , iv, key);
-
     for (var pair of data.entries()) {
-
-        window.crypto.subtle.encrypt(
-            {
-                name: "AES-CTR",
-                counter: iv,
-                length: 256,
-            },
-            key,
-            pair[1]
-        )
-            .then(function (encrypted) {
-                JSONresult["userData"][pair[0]] = new Uint8Array(encrypted);
-            })
-
+        JSONresult["userData"][pair[0]] = await encryptUserData(pair[1], key, iv)
     }
 
     console.log(JSONresult);
+
     document.getElementById('password').value = 'SorryBruh'; // GRIJA LA PAROLELE DIN URL !!!!!!!!!!!!!
 
     fetch("http://localhost:5016",
@@ -39,12 +37,16 @@ formular.addEventListener('submit', (e) => {
             headers: {
                 "Content-Type": "text/plain",
             },
+            mode: "no-cors",
             body: JSON.stringify(JSONresult)
+        })
+        .then(function (response) {
+            console.log("Json sent!", response);
         })
 });
 
 async function generateAESKey() {
-    var AESKey
+    var AESkey;
     await window.crypto.subtle.generateKey(
         {
             name: "AES-CTR",
@@ -53,16 +55,15 @@ async function generateAESKey() {
         true,
         ["encrypt", "decrypt"]
     )
-        .then((result) => {
-            AESKey = result;
-            //giveKey(result);
-        });
+    .then(function (result) {
+        AESkey = result;
+    });
 
-    return AESKey;
+    return AESkey;
 }
 
-async function encryptUserData(email, RSAPublicKey, iv, keyToEncrypt) {
-    JSONresult = {};
+async function encryptOwnerData(RSAPublicKey, iv, keyToEncrypt) {
+    ownerJson = {};
 
     var algorithm = {
         name: "RSA-OAEP",
@@ -70,7 +71,8 @@ async function encryptUserData(email, RSAPublicKey, iv, keyToEncrypt) {
             name: "SHA-256"
         }
     };
-    RSAPublicKey = JSON.parse(RSAPublicKey);
+
+    RSAPublicKey = await JSON.parse(RSAPublicKey);
 
     var enc = new TextEncoder();
 
@@ -78,23 +80,13 @@ async function encryptUserData(email, RSAPublicKey, iv, keyToEncrypt) {
         "jwk",
         RSAPublicKey,
         algorithm,
-        false,
-        ["encrypt"]
-        )
-        .then( (key) => {
-            RSAPublicKey = key;
-        }) 
-
-    await window.crypto.subtle.encrypt(
-        {
-            name: "RSA-OAEP",
-        },
-        RSAPublicKey,
-        enc.encode(email)
+        true,
+        ["encrypt", "wrapKey"]
     )
-        .then(function (encrypted) {
-            JSONresult["email"] = new Uint8Array(encrypted)
-        });
+        .then((key) => {
+            RSAPublicKey = key;
+        })
+        .catch(e => console.log(e.message));
 
     await window.crypto.subtle.encrypt(
         {
@@ -104,22 +96,49 @@ async function encryptUserData(email, RSAPublicKey, iv, keyToEncrypt) {
         iv
     )
         .then(function (encrypted) {
-            JSONresult["iv"] = new Uint8Array(encrypted);
-        });
+            ownerJson["iv"] = new Uint8Array(encrypted);
+        })
+        .catch(e => console.log(e.message));
 
-    window.crypto.subtle.wrapKey(
-        "jwk", //the export format, must be "raw" (only available sometimes)
+    await window.crypto.subtle.wrapKey(
+        "raw", //the export format, must be "raw" (only available sometimes)
         keyToEncrypt, //the key you want to wrap, must be able to fit in RSA-OAEP padding
-        publicKey, //the public key with "wrapKey" usage flag
+        RSAPublicKey, //the public key with "wrapKey" usage flag
         {   //these are the wrapping key's algorithm options
-            name: "RSA-OAEP",
-            hash: { name: "SHA-256" },
+            name: "RSA-OAEP"
         }
     )
         .then(function (wrapped) {
-            //returns an ArrayBuffer containing the encrypted data
-            JSONresult["key"] = new Uint8Array(wrapped);
+            ownerJson["key"] = new Uint8Array(wrapped);
+        })
+        .catch(e => console.log(e.message));
+
+    return ownerJson;
+}
+
+async function encryptUserData(data, key, iv) {
+    var encryptedData;
+    var enc = new TextEncoder();
+
+    await window.crypto.subtle.encrypt(
+        {
+            name: "AES-CTR",
+            counter: iv,
+            length: 128,
+        },
+        key,
+        enc.encode(data)
+    )
+        .then(function (encrypted) {
+            encryptedData = new Uint8Array(encrypted);
         });
 
-    return JSONresult;
+    return encryptedData;
 }
+function uidJsonToArray(json) {
+    var ret = new Uint8Array(128);
+    for (var i = 0; i < 128; i++) {
+        ret[i] = json[i]
+    }
+    return ret
+};

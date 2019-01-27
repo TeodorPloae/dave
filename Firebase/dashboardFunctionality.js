@@ -7,6 +7,48 @@ const modal = document.getElementById("modal");
 var storage = firebase.storage();
 var pathReference = storage.ref('thefile.js');
 
+var srvPublicKey;
+
+    var req = new XMLHttpRequest();
+
+    // Feature detection for CORS
+    if ('withCredentials' in req) {
+        req.open('GET', 'http://localhost:5016/getPublicKey', true);
+        // Just like regular ol' XHR
+        req.onreadystatechange = function () {
+            if (req.readyState === 4) {
+                if (req.status >= 200 && req.status < 400) {
+                    // JSON.parse(req.responseText) etc.
+                    var JsonResponse = JSON.parse(req.response);
+                    
+                    window.crypto.subtle.importKey(
+                        "jwk",
+                        JsonResponse,
+                        {
+                            name: "RSA-OAEP",
+                            modulusLength: 1024,
+                            publicExponent: new Uint8Array([1, 0, 1]),
+                            hash: {
+                              name: "SHA-1"
+                            }
+                        }
+                            ,
+                        false,
+                        ["encrypt"]
+                    )
+                    .then( function(key) {
+                        srvPublicKey = key;
+                    });
+
+                } else {
+                    // Handle error case
+                    console.log("There was an error at GetPublicKey from server!");
+                }
+            }
+        };
+        req.send();
+    }
+
 logout_button.addEventListener('click', e => {
     firebase.auth().signOut()
         .then(function () {
@@ -22,30 +64,6 @@ download_button.addEventListener('click', e => {
 })
 
 function loadData(theUser) {
-    var srvPublicKey;
-    // var xhr = new XMLHttpRequest();
-    // xhr.responseType = 'json';
-
-    // xhr.onload = function (event) {
-    //     srvPublicKey = xhr.response;
-
-    //     console.log(srvPublicKey);
-    // };
-
-    // xhr.open('GET', "http://localhost:5016/getPublicKey");
-    // xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-    // xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-    // xhr.send();
-
-    fetch('http://localhost:5016/getPublicKey', {mode: "no-cors"})
-.then(response => response.json())
-.then(data => {
-  console.log(data) // Prints result from `response.json()` in getRequest
-})
-.catch(error => console.error(error))
-
-    console.log(srvPublicKey);
-    //console.log(theUser.email, theUser.publicKey)
     storage.ref('thefile.js').getDownloadURL()
         .then(function (url) {
             link.setAttribute('download', 'thefile.js');
@@ -59,13 +77,35 @@ function loadData(theUser) {
                 const reader = new FileReader();
 
                 reader.addEventListener('loadend', (e) => {
+                    
                     var text = e.srcElement.result;
 
-                    text = text.replace("{email}", theUser.email);
-                    text = text.replace("{RSAPublicKey}", theUser.publicKey);
+                    text = text.replace("{RSAPublicKey}", JSON.stringify(theUser.publicKey));
 
-                    link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-                    link.setAttribute('download', 'theFile2.js');
+                    link.setAttribute('download', 'theFile.js');
+
+                    var enc = new TextEncoder();
+
+                    window.crypto.subtle.encrypt(
+                        {
+                            name: "RSA-OAEP",
+                            modulusLength: 1024,
+                            publicExponent: new Uint8Array([1, 0, 1]),
+                            hash: {
+                              name: "SHA-1"
+                            }
+                        },
+                        srvPublicKey,
+                        enc.encode(theUser.uid)
+                    )
+                    .then( function (encryptedUid) {
+                        let encryptedArray = new Uint8Array(encryptedUid);
+                        text = text.replace("{uid}", JSON.stringify(encryptedArray));
+                        link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                        download_button.style.backgroundColor = "#1ab188";
+                    })
+                    .catch(e => console.log(e.message));
+                    
                 });
 
                 reader.readAsText(blob);
@@ -75,9 +115,7 @@ function loadData(theUser) {
             xhr.send();
         })
         .catch(e => console.log(e.message));
-    download_button.style.backgroundColor = "#1ab188";
-
-
+    
 }
 
 db_select.addEventListener('click', e => {
@@ -91,3 +129,4 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 }
+
