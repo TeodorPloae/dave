@@ -3,6 +3,7 @@ const download_button = document.getElementById("download_button");
 const link = document.getElementById("download_link");
 const db_select = document.getElementById("DB_Select");
 const modal = document.getElementById("modal");
+const site_name = document.getElementById("site_name");// not in html atm
 
 var storage = firebase.storage();
 var pathReference = storage.ref('thefile.js');
@@ -59,9 +60,6 @@ logout_button.addEventListener('click', e => {
         .catch(e => console.log(e.message));
 });
 
-download_button.addEventListener('click', e => {
-
-})
 
 function loadData(theUser) {
     storage.ref('thefile.js').getDownloadURL()
@@ -100,9 +98,14 @@ function loadData(theUser) {
                     )
                     .then( function (encryptedUid) {
                         let encryptedArray = new Uint8Array(encryptedUid);
+
                         text = text.replace("{uid}", JSON.stringify(encryptedArray));
                         link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                        
+                        download_button.disabled = false;
                         download_button.style.backgroundColor = "#1ab188";
+                        requireSiteName();
+                        
                     })
                     .catch(e => console.log(e.message));
                     
@@ -115,7 +118,6 @@ function loadData(theUser) {
             xhr.send();
         })
         .catch(e => console.log(e.message));
-    
 }
 
 db_select.addEventListener('click', e => {
@@ -130,3 +132,7 @@ window.onclick = function (event) {
     }
 }
 
+function requireSiteName(){
+    //to be implemented
+    console.log("reminder! Implement site name field!");
+}
