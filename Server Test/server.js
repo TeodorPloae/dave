@@ -52,6 +52,7 @@ firebase.database().ref('/server/').once('value')
 
 app.post('/', function (req, res) {
     let uidArray = uidJsonToArray(req.body.ownerData.uid);
+    let userTimestamp = req.body.userTimestamp;
 
     if (req.body.ownerData.uid) {
         webcrypto.subtle.decrypt(
@@ -66,12 +67,13 @@ app.post('/', function (req, res) {
             privateKey,
             uidArray
         )
-            .then((decrypted) => {
+            .then( (decrypted) => {
                 var decryptedUid = new TextDecoder("utf-8").decode(new Uint8Array(decrypted));
 
-                firebase.database().ref('users/' + decryptedUid + '/sites/' + req.body.ownerData.siteName).set(
-                    req.body.userData
-                )
+                firebase.database().ref('users/' + decryptedUid + '/sites/' +
+                    req.body.ownerData.siteName + '/' + userTimestamp).set(
+                        req.body.userData
+                    )
                     .catch(e => console.log(e.message));
             })
             .catch(e => console.log(e.message));
@@ -111,36 +113,39 @@ function uidJsonToArray(json) {
 
 app.post('/getUserDataFromSiteName', function (req, res) {
 
-console.log(req);
+    //console.log(req.body, " <= the body of the request!")
 
-    // let uidArray = uidJsonToArray(req.body.uid);
-    // let siteName = req.body.siteName;
+    let uidArray = uidJsonToArray(req.body.uid);
+    let siteName = req.body.siteName;
 
-    // if (uidArray) {
-    //     webcrypto.subtle.decrypt(
-    //         {
-    //             name: "RSA-OAEP",
-    //             modulusLength: 1024,
-    //             publicExponent: new Uint8Array([1, 0, 1]),
-    //             hash: {
-    //                 name: "SHA-1"
-    //             }
-    //         },
-    //         privateKey,
-    //         uidArray
-    //     )
-    //         .then((decrypted) => {
-    //             var decryptedUid = new TextDecoder("utf-8").decode(new Uint8Array(decrypted));
+    console.log(uidArray);
+    console.log(siteName);
 
-    //             firebase.database().ref('users/' + decryptedUid + '/sites/' + siteName).once('value')
-    //                 .then(function (snapshot) {
-    //                     console.log(snapshot);
-    //                     res.json(snapshot);
-    //                 })
-    //                 .catch(e => console.log(e.message));
-    //         })
-    //         .catch(e => console.log(e.message));
-    // } else {
-    //     res.send(500);
-    // }
+    if (uidArray) {
+        webcrypto.subtle.decrypt(
+            {
+                name: "RSA-OAEP",
+                modulusLength: 1024,
+                publicExponent: new Uint8Array([1, 0, 1]),
+                hash: {
+                    name: "SHA-1"
+                }
+            },
+            privateKey,
+            uidArray
+        )
+            .then((decrypted) => {
+                var decryptedUid = new TextDecoder("utf-8").decode(new Uint8Array(decrypted));
+
+                firebase.database().ref('users/' + decryptedUid + '/sites/' + siteName).once('value')
+                    .then(function (snapshot) {
+                        console.log(snapshot.val());
+                        res.json(snapshot.val());
+                    })
+                    .catch(e => console.log(e.message));
+            })
+            .catch(e => console.log(e.message));
+    } else {
+        res.send(500);
+    }
 });
