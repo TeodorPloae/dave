@@ -17,7 +17,7 @@ formular.addEventListener('submit', async (e) => {
 
     var encryptedUID = {uid};
 
-    JSONresult["ownerData"] = encrdata;
+    JSONresult["userData"]["aesComponents"] = encrdata;
     JSONresult["ownerData"]["uid"] = uidJsonToArray(encryptedUID);
     JSONresult["ownerData"]["siteName"] = "jetix";
 
@@ -26,6 +26,8 @@ formular.addEventListener('submit', async (e) => {
     for (var pair of data.entries()) {
         JSONresult["userData"][pair[0]] = await encryptUserData(pair[1], key, iv)
     }
+
+    JSONresult["userTimestamp"] = + new Date();
 
     console.log(JSONresult);
 
@@ -73,8 +75,6 @@ async function encryptOwnerData(RSAPublicKey, iv, keyToEncrypt) {
     };
 
     RSAPublicKey = await JSON.parse(RSAPublicKey);
-
-    var enc = new TextEncoder();
 
     await window.crypto.subtle.importKey(
         "jwk",

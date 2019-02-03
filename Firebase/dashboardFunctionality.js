@@ -153,17 +153,115 @@ function getUserData(theUser) {
                     // JSON.parse(request.responseText) etc.
                     var JsonResponse = JSON.parse(request.response);
 
-                    console.log(JsonResponse);
+                    console.log(JsonResponse, "JsonResponse");
+
+                    Object.keys(JsonResponse).forEach( async function(timeStamp) {
+                        //trateaza fiecare unser in parte
+                        //console.log(JsonResponse[timeStamp]["aesComponents"], "aicisa")
+                        let aesComponents = JsonResponse[timeStamp]["aesComponents"];
+
+                        delete JsonResponse[timeStamp]["aesComponents"];
+
+
+                        aesComponents = await decryptUserAEScomponents(aesComponents, theUser.privateKey);
+     
+                        var userData = {};
+                        Object.keys(JsonResponse[timeStamp]).forEach( async function (key) {
+                            userData[timeStamp][key] = await aesDecrypt(
+                                JsonResponse[timeStamp][key], 
+                                aesComponents.key,
+                                aesComponents.iv
+                                );
+                        });
+
+                        console.log(userData);
+                    });
                 } else {
                     // Handle error case
-                    console.log("error ")
+                    console.log("error at getUserData from server!");
                 }
             }
         };
-        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        request.setRequestHeader('Content-type', 'text/plain; charset=utf-8');
         let data = JSON.stringify({"uid" : theUser.encryptedUid, "siteName" : "jetix"});
-        console.log(data);
         request.send(data);
     }
 
+}
+
+async function aesDecrypt(data, key, iv) {
+    var decrypt;
+    console.log(data, "aesDecr data");
+    window.crypto.subtle.decrypt(
+        {
+            name: "AES-CTR",
+            counter: iv,
+            length: 256
+        },
+        key,
+        new Uint8Array( data)
+    )
+    .then(function(decrypted){
+        decrypt = new Uint8Array(decrypted);
+    })
+    .catch(e => console.log(e.message));
+
+    return decrypt;
+}
+
+async function decryptUserAEScomponents(aesComponents, rsaPrivateKey) {
+
+    console.log(aesComponents, "in DUAC");
+
+    aesComponents.iv = await rsaDecrypt(aesComponents.iv, rsaPrivateKey);
+// import key;
+    await window.crypto.subtle.unwrapKey(
+        "raw", //the import format, must be "raw" (only available sometimes)
+        new Uint8Array( aesComponents.key), //the key you want to unwrap
+        rsaPrivateKey, //the private key with "unwrapKey" usage flag
+        {   //these are the wrapping key's algorithm options
+            name: "RSA-OAEP",
+            modulusLength: 2048,
+            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+            hash: {
+                name: "SHA-256"
+            },
+        },
+        {   //this what you want the wrapped key to become (same as when wrapping)
+            name: "AES-CTR",
+            length: 128
+        },
+        false, //whether the key is extractable (i.e. can be used in exportKey)
+        ["encrypt", "decrypt"] //the usages you want the unwrapped key to have
+    )
+    .then(function(key){
+        aesComponents.key = key;
+        console.log(aesComponents);
+    })
+    .catch(function(err){
+        console.error(err);
+    });
+
+    return aesComponents;
+}
+
+async function rsaDecrypt(data, key){
+    var result;
+    console.log(data, "data",);
+    await window.crypto.subtle.decrypt(
+        {
+            name: "RSA-OAEP"
+        },
+        key, 
+        new Uint8Array(data) 
+    )
+    .then(function(decrypted){
+        result = new Uint8Array( decrypted);
+        console.log(decrypted, "decr");
+    })
+    .catch(function(err){
+        console.error(err);
+    });
+
+    return result;
 }
