@@ -13,15 +13,13 @@ formular.addEventListener('submit', async (e) => {
         "ownerData": {}
     };
 
-    var encrdata = await encryptOwnerData("{\"alg\":\"RSA-OAEP-256\",\"e\":\"AQAB\",\"ext\":true,\"key_ops\":[\"encrypt\",\"wrapKey\"],\"kty\":\"RSA\",\"n\":\"vAlTRTU_FstxFSf5Z50vzHqn94c81DD1eacSKKwyJfK1sZJp7fyvadVezvYe_e8AmDI0wzblfDKtgp42MFa_3qNq4xmnObuTlEYJoSfOemwM_5TsAYl7HWAesDTb_Ij3qsP0B5_O9DOwJJOC3lXrrneyJXkl2JW-Zhw2FmfN1YJpEeMg5jXSaMFuqMhM3g_bbcfdrqmJa-qvOIKSH10h218e_z2cWVJhYlrnIhtzMhC0ELgxEykN8cm2GQ5m5fyvoXKlzqzMkALiKBqqYpg_oz2LyLRKgHZmcbk79nQmw3M4ftQIOoAVYJQXxhbvTpO1oJQJgDX_TO0OGo8bllVi2w\"}", iv, key);
+    var encrdata = await encryptOwnerData("{\"alg\":\"RSA-OAEP-256\",\"e\":\"AQAB\",\"ext\":true,\"key_ops\":[\"encrypt\",\"wrapKey\"],\"kty\":\"RSA\",\"n\":\"xIAyDWZU2_hLRspWXxRC2HwbdolaNQ8mFW2W3WMySB4RJZX8BfV841vFruTsRxIvjkgm8A0B75A4aN6Z3fFLAIg668gfCKZG9O5TWac8_rsFssQEjI5qK0eRhHiv_tVYVXynCB_pRze_iCVfm0WHBV-Kajr7HIIHLZV1Lg1b8GdlcWeyOmpJgHBmk0Oz32jbYV8WjsUxdk6TpPufbv0PLH84B_1bpC2PGGOiVX5kJlt67D0EJBBnfBdRWVHb6DlTzPkLM5Gw1xkRJG1WVu9UQYyReI9g9Y6iohZBtDXqgg-6lIBT79r6CySYPHuCli10YbJMCDJZir6Moh9hKXURKw\"}", iv, key);
 
-    var encryptedUID = {"0":183,"1":37,"2":200,"3":169,"4":16,"5":166,"6":174,"7":157,"8":171,"9":218,"10":254,"11":1,"12":172,"13":243,"14":200,"15":63,"16":139,"17":235,"18":159,"19":176,"20":189,"21":45,"22":56,"23":110,"24":227,"25":23,"26":254,"27":247,"28":249,"29":179,"30":142,"31":228,"32":213,"33":241,"34":116,"35":21,"36":157,"37":214,"38":186,"39":252,"40":169,"41":11,"42":37,"43":148,"44":245,"45":242,"46":29,"47":39,"48":195,"49":191,"50":54,"51":10,"52":210,"53":102,"54":15,"55":186,"56":92,"57":248,"58":76,"59":74,"60":206,"61":31,"62":66,"63":130,"64":219,"65":17,"66":160,"67":195,"68":149,"69":99,"70":70,"71":230,"72":7,"73":125,"74":193,"75":47,"76":44,"77":111,"78":157,"79":38,"80":87,"81":183,"82":64,"83":251,"84":196,"85":150,"86":16,"87":102,"88":85,"89":113,"90":1,"91":58,"92":190,"93":215,"94":222,"95":217,"96":104,"97":184,"98":226,"99":36,"100":213,"101":91,"102":237,"103":49,"104":72,"105":36,"106":49,"107":222,"108":23,"109":177,"110":230,"111":111,"112":65,"113":217,"114":167,"115":164,"116":220,"117":85,"118":189,"119":94,"120":213,"121":233,"122":32,"123":44,"124":110,"125":51,"126":58,"127":173};
+    var encryptedUID = {"0":205,"1":190,"2":150,"3":252,"4":67,"5":197,"6":209,"7":115,"8":198,"9":234,"10":37,"11":195,"12":36,"13":126,"14":246,"15":240,"16":250,"17":188,"18":56,"19":46,"20":15,"21":150,"22":78,"23":235,"24":42,"25":25,"26":6,"27":135,"28":112,"29":255,"30":90,"31":121,"32":89,"33":77,"34":54,"35":74,"36":2,"37":206,"38":132,"39":49,"40":6,"41":208,"42":194,"43":213,"44":246,"45":253,"46":22,"47":47,"48":52,"49":103,"50":229,"51":179,"52":122,"53":54,"54":181,"55":208,"56":128,"57":255,"58":99,"59":195,"60":160,"61":238,"62":38,"63":122,"64":35,"65":131,"66":241,"67":114,"68":77,"69":199,"70":245,"71":35,"72":177,"73":66,"74":189,"75":202,"76":143,"77":216,"78":64,"79":68,"80":90,"81":89,"82":253,"83":28,"84":160,"85":149,"86":196,"87":233,"88":41,"89":5,"90":180,"91":2,"92":59,"93":74,"94":174,"95":180,"96":118,"97":229,"98":99,"99":238,"100":131,"101":106,"102":97,"103":122,"104":87,"105":166,"106":238,"107":98,"108":35,"109":141,"110":219,"111":251,"112":123,"113":74,"114":11,"115":145,"116":42,"117":56,"118":228,"119":124,"120":213,"121":92,"122":139,"123":19,"124":163,"125":248,"126":40,"127":36};
 
     JSONresult["userData"]["aesComponents"] = encrdata;
     JSONresult["ownerData"]["uid"] = uidJsonToArray(encryptedUID);
     JSONresult["ownerData"]["siteName"] = "jetix";
-    
-   
 
     var data = new FormData(e.target);
 
@@ -29,9 +27,9 @@ formular.addEventListener('submit', async (e) => {
         JSONresult["userData"][pair[0]] = await encryptUserData(pair[1], key, iv)
     }
 
-    console.log(JSONresult);
-
     JSONresult["userTimestamp"] = + new Date();
+
+    console.log(JSONresult);
 
     document.getElementById('password').value = 'SorryBruh'; // GRIJA LA PAROLELE DIN URL !!!!!!!!!!!!!
 
@@ -54,7 +52,7 @@ async function generateAESKey() {
     await window.crypto.subtle.generateKey(
         {
             name: "AES-CTR",
-            length: 256,
+            length: 128,
         },
         true,
         ["encrypt", "decrypt"]
@@ -71,14 +69,14 @@ async function encryptOwnerData(RSAPublicKey, iv, keyToEncrypt) {
 
     var algorithm = {
         name: "RSA-OAEP",
-        hash: {
-            name: "SHA-256"
-        }
+        modulusLength: 2048,
+            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+            hash: {
+                name: "SHA-256"
+        },
     };
 
     RSAPublicKey = await JSON.parse(RSAPublicKey);
-
-    var enc = new TextEncoder();
 
     await window.crypto.subtle.importKey(
         "jwk",
@@ -93,9 +91,7 @@ async function encryptOwnerData(RSAPublicKey, iv, keyToEncrypt) {
         .catch(e => console.log(e.message));
 
     await window.crypto.subtle.encrypt(
-        {
-            name: "RSA-OAEP",
-        },
+        algorithm,
         RSAPublicKey,
         iv
     )
@@ -108,9 +104,7 @@ async function encryptOwnerData(RSAPublicKey, iv, keyToEncrypt) {
         "raw", //the export format, must be "raw" (only available sometimes)
         keyToEncrypt, //the key you want to wrap, must be able to fit in RSA-OAEP padding
         RSAPublicKey, //the public key with "wrapKey" usage flag
-        {   //these are the wrapping key's algorithm options
-            name: "RSA-OAEP"
-        }
+        algorithm
     )
         .then(function (wrapped) {
             ownerJson["key"] = new Uint8Array(wrapped);
@@ -135,6 +129,7 @@ async function encryptUserData(data, key, iv) {
     )
         .then(function (encrypted) {
             encryptedData = new Uint8Array(encrypted);
+            console.log(encryptedData);
         });
 
     return encryptedData;

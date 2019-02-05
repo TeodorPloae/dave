@@ -27,7 +27,7 @@ class UserData{
                         snapshot.val().privateKey,
                         algorithm,
                         false,
-                        ["decrypt"]
+                        ["decrypt", "unwrapKey"]
                         )
                         .then( (key) => {
                             this.privateKey = key;
@@ -55,7 +55,6 @@ firebase.auth().onAuthStateChanged(async user => {
             .catch(e => console.log(e.message));
     }
 
-    //window.User = User;
     theUser = User;
     loadData(theUser);
 });

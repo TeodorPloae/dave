@@ -52,7 +52,7 @@ async function generateAESKey() {
     await window.crypto.subtle.generateKey(
         {
             name: "AES-CTR",
-            length: 256,
+            length: 128,
         },
         true,
         ["encrypt", "decrypt"]
@@ -69,9 +69,11 @@ async function encryptOwnerData(RSAPublicKey, iv, keyToEncrypt) {
 
     var algorithm = {
         name: "RSA-OAEP",
-        hash: {
-            name: "SHA-256"
-        }
+        modulusLength: 2048,
+            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+            hash: {
+                name: "SHA-256"
+        },
     };
 
     RSAPublicKey = await JSON.parse(RSAPublicKey);
@@ -89,9 +91,7 @@ async function encryptOwnerData(RSAPublicKey, iv, keyToEncrypt) {
         .catch(e => console.log(e.message));
 
     await window.crypto.subtle.encrypt(
-        {
-            name: "RSA-OAEP",
-        },
+        algorithm,
         RSAPublicKey,
         iv
     )
@@ -104,9 +104,7 @@ async function encryptOwnerData(RSAPublicKey, iv, keyToEncrypt) {
         "raw", //the export format, must be "raw" (only available sometimes)
         keyToEncrypt, //the key you want to wrap, must be able to fit in RSA-OAEP padding
         RSAPublicKey, //the public key with "wrapKey" usage flag
-        {   //these are the wrapping key's algorithm options
-            name: "RSA-OAEP"
-        }
+        algorithm
     )
         .then(function (wrapped) {
             ownerJson["key"] = new Uint8Array(wrapped);
@@ -131,6 +129,7 @@ async function encryptUserData(data, key, iv) {
     )
         .then(function (encrypted) {
             encryptedData = new Uint8Array(encrypted);
+            console.log(encryptedData);
         });
 
     return encryptedData;

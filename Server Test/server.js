@@ -113,13 +113,8 @@ function uidJsonToArray(json) {
 
 app.post('/getUserDataFromSiteName', function (req, res) {
 
-    //console.log(req.body, " <= the body of the request!")
-
     let uidArray = uidJsonToArray(req.body.uid);
     let siteName = req.body.siteName;
-
-    console.log(uidArray);
-    console.log(siteName);
 
     if (uidArray) {
         webcrypto.subtle.decrypt(

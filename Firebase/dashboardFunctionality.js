@@ -9,6 +9,7 @@ var storage = firebase.storage();
 var pathReference = storage.ref('thefile.js');
 
 const enc = new TextEncoder();
+const dec = new TextDecoder();
 
 var srvPublicKey;
 
@@ -64,6 +65,7 @@ logout_button.addEventListener('click', e => {
 });
 
 function loadData(theUser) {
+;
     if (!readDownload) {
         return;
     }
@@ -153,33 +155,35 @@ function getUserData(theUser) {
                     // JSON.parse(request.responseText) etc.
                     var JsonResponse = JSON.parse(request.response);
 
-                    console.log(JsonResponse, "JsonResponse");
+                    var userData = {};
+                    var atributes = new Set();
 
                     Object.keys(JsonResponse).forEach( async function(timeStamp) {
-                        //trateaza fiecare unser in parte
-                        //console.log(JsonResponse[timeStamp]["aesComponents"], "aicisa")
                         let aesComponents = JsonResponse[timeStamp]["aesComponents"];
 
                         delete JsonResponse[timeStamp]["aesComponents"];
 
-
                         aesComponents = await decryptUserAEScomponents(aesComponents, theUser.privateKey);
-     
-                        var userData = {};
+
+                        var currentUserData = {};
                         Object.keys(JsonResponse[timeStamp]).forEach( async function (key) {
-                            userData[timeStamp][key] = await aesDecrypt(
+                            currentUserData[key] = await aesDecrypt(
                                 JsonResponse[timeStamp][key], 
                                 aesComponents.key,
                                 aesComponents.iv
                                 );
+                            atributes.add(key);
                         });
-
-                        console.log(userData);
+                        userData[timeStamp] = currentUserData;
                     });
+                    //return userData
+                    userData["attributes"] = atributes;
+                    console.log(userData);
                 } else {
                     // Handle error case
                     console.log("error at getUserData from server!");
                 }
+                
             }
         };
         request.setRequestHeader('Content-type', 'text/plain; charset=utf-8');
@@ -190,35 +194,61 @@ function getUserData(theUser) {
 }
 
 async function aesDecrypt(data, key, iv) {
-    var decrypt;
-    console.log(data, "aesDecr data");
-    window.crypto.subtle.decrypt(
+    var decryptedText;
+    await window.crypto.subtle.decrypt(
         {
             name: "AES-CTR",
             counter: iv,
-            length: 256
+            length: 128
         },
         key,
-        new Uint8Array( data)
+        new Uint8Array(data)
     )
     .then(function(decrypted){
-        decrypt = new Uint8Array(decrypted);
+        decryptedText = dec.decode(new Uint8Array(decrypted));
     })
     .catch(e => console.log(e.message));
 
-    return decrypt;
+    return decryptedText;
 }
 
 async function decryptUserAEScomponents(aesComponents, rsaPrivateKey) {
 
-    console.log(aesComponents, "in DUAC");
+    aesComponents.key = await unwrapKey(aesComponents.key, rsaPrivateKey);
 
     aesComponents.iv = await rsaDecrypt(aesComponents.iv, rsaPrivateKey);
-// import key;
+
+    return aesComponents;
+}
+
+async function rsaDecrypt(data, key){
+    var result;
+
+    await window.crypto.subtle.decrypt(
+        {
+            name: "RSA-OAEP"
+        },
+        key, 
+        new Uint8Array(data) 
+    )
+    .then(function(decrypted){
+        result = new Uint8Array( decrypted);
+    })
+    .catch(function(err){
+        console.error(err);
+    });
+
+    return result;
+}
+
+async function unwrapKey(wrapped, rsaKey){
+    var result;
+    wrappedKey = new Uint8Array(wrapped);
+
     await window.crypto.subtle.unwrapKey(
         "raw", //the import format, must be "raw" (only available sometimes)
-        new Uint8Array( aesComponents.key), //the key you want to unwrap
-        rsaPrivateKey, //the private key with "unwrapKey" usage flag
+        wrappedKey, //the key you want to unwrap
+        rsaKey, //the private key with "unwrapKey" usage flag
         {   //these are the wrapping key's algorithm options
             name: "RSA-OAEP",
             modulusLength: 2048,
@@ -231,33 +261,11 @@ async function decryptUserAEScomponents(aesComponents, rsaPrivateKey) {
             name: "AES-CTR",
             length: 128
         },
-        false, //whether the key is extractable (i.e. can be used in exportKey)
+        true, //whether the key is extractable (i.e. can be used in exportKey)
         ["encrypt", "decrypt"] //the usages you want the unwrapped key to have
     )
     .then(function(key){
-        aesComponents.key = key;
-        console.log(aesComponents);
-    })
-    .catch(function(err){
-        console.error(err);
-    });
-
-    return aesComponents;
-}
-
-async function rsaDecrypt(data, key){
-    var result;
-    console.log(data, "data",);
-    await window.crypto.subtle.decrypt(
-        {
-            name: "RSA-OAEP"
-        },
-        key, 
-        new Uint8Array(data) 
-    )
-    .then(function(decrypted){
-        result = new Uint8Array( decrypted);
-        console.log(decrypted, "decr");
+        result = key;
     })
     .catch(function(err){
         console.error(err);
