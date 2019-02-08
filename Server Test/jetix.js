@@ -19,7 +19,7 @@ formular.addEventListener('submit', async (e) => {
 
     JSONresult["userData"]["aesComponents"] = encrdata;
     JSONresult["ownerData"]["uid"] = uidJsonToArray(encryptedUID);
-    JSONresult["ownerData"]["siteName"] = "jetix";
+    JSONresult["ownerData"]["siteName"] = "jetix.ro"; //window.location.hostname
 
     var data = new FormData(e.target);
 
@@ -30,8 +30,6 @@ formular.addEventListener('submit', async (e) => {
     JSONresult["userTimestamp"] = + new Date();
 
     console.log(JSONresult);
-
-    document.getElementById('password').value = 'SorryBruh'; // GRIJA LA PAROLELE DIN URL !!!!!!!!!!!!!
 
     fetch("http://localhost:5016",
         {
