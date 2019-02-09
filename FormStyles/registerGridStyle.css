@@ -88,8 +88,8 @@
       grid-template-areas:
       'FN-label LN-label'
       'FN LN'
-      'User-label email-label'
-      'User email'
+      'email-label User-label'
+      'email User'
       'Pass-label CPass-label'
       'Pass CPass'
       'Submit Submit';

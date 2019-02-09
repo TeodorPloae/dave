@@ -84,6 +84,7 @@ db_button_select.addEventListener("change", e => {
 });
 
 function populateTable(userData) {
+    site_db_view.innerHTML = "";
     var table = document.createElement("table");
     site_db_view.appendChild(table);
 
@@ -102,7 +103,7 @@ function populateTable(userData) {
     
     Object.keys(userData).forEach(function(timeStamp){
         var newTr = document.createElement("tr");
-         
+
         Object.keys(userData[timeStamp]).forEach(function(key){
             var newTd = document.createElement("td");
             newTr.appendChild(newTd);
