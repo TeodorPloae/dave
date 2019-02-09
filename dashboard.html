@@ -9,18 +9,6 @@
 </head>
 
 
-<div id = "modal">
-    <div class="modal_popup">
-        <ul>
-            <li>Site 1</li>
-            <li>Site 2</li>
-            <li>Site 3</li>
-            <li>Site 4</li>
-        </ul>
-    </div>
-</div>
-
-
 <body class = "body">
     <div class = "container"> 
 
@@ -32,7 +20,11 @@
         <div class = "db_view">
         
             <div class = "db_view_header">
-                <button id = "DB_Select" class = "button">Select Your DB</button>
+
+                <select id= "DB_Select" class = "button">
+                    <option value="" selected hidden>Select Your DB</option>
+                    
+                </select>
                 
             </div>
             <div class = "db_view_container">DB View</div>

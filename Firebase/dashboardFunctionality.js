@@ -2,7 +2,6 @@ const logout_button = document.getElementById("logout_button");
 const download_button = document.getElementById("download_button");
 const link = document.getElementById("download_link");
 const db_select = document.getElementById("DB_Select");
-const modal = document.getElementById("modal");
 const site_name = document.getElementById("site_name");// not in html atm
 var readDownload = true;
 var storage = firebase.storage();
@@ -127,17 +126,6 @@ function loadData(theUser) {
         .catch(e => console.log(e.message));
 }
 
-db_select.addEventListener('click', e => {
-
-    modal.style.display = 'block';
-
-});
-
-window.onclick = function (event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
 
 function requireSiteName() {
     //to be implemented
