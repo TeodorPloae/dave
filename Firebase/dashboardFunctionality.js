@@ -65,10 +65,11 @@ logout_button.addEventListener('click', e => {
 });
 
 function loadData(theUser) {
-;
     if (!readDownload) {
         return;
     }
+    setSelectDB(theUser);
+
     storage.ref('thefile.js').getDownloadURL()
         .then(function (url) {
             link.setAttribute('download', 'thefile.js');
@@ -111,8 +112,9 @@ function loadData(theUser) {
                             download_button.disabled = false;
 
                             download_button.style.backgroundColor = "#1ab188";
-                            requireSiteName();
-                            getUserData(theUser);
+
+                            //getUserData(theUser);
+                            getUserSites(theUser);
                         })
                         .catch(e => console.log(e.message));
 
@@ -139,12 +141,7 @@ window.onclick = function (event) {
     }
 }
 
-function requireSiteName() {
-    //to be implemented
-    console.log("reminder! Implement site name field!");
-}
-
-function getUserData(theUser) {
+function getUserData(theUser, siteName) {
     var request = new XMLHttpRequest();
     if ('withCredentials' in request) {
         request.open('POST', 'http://localhost:5016/getUserDataFromSiteName', true);
@@ -187,7 +184,7 @@ function getUserData(theUser) {
             }
         };
         request.setRequestHeader('Content-type', 'text/plain; charset=utf-8');
-        let data = JSON.stringify({"uid" : theUser.encryptedUid, "siteName" : "jetix"});
+        let data = JSON.stringify({"uid" : theUser.encryptedUid, "siteName" : siteName});
         request.send(data);
     }
 
