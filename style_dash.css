@@ -1,5 +1,6 @@
 #DB_Select{
     text-align: center;
+    background-color: grey;
 }
 
 .button {
@@ -83,6 +84,8 @@
     padding-top: 50px;
     /* box-shadow: 5px 5px black; */
     box-shadow: 5px 5px 6px #43434c;
+    overflow: hidden; 
+    
 }
 
 .db_view_header{
@@ -94,13 +97,39 @@
 }
 
 .db_view_container{
+    display: inline-block;
     position: relative;
     border: 2px solid white;
-    border-radius: 15px;
     margin: 10px; 
     height: calc( 100% - 70px );
-    width: 100%;
+    overflow: auto;
+ 
 }
+
+
+table {
+    table-layout: fixed;
+    width: 80%;
+    font-family: "Lucida Console", Monaco, monospace;
+    border-collapse: collapse;
+    border-spacing: 10px;
+    
+  }
+  
+td, th {
+    text-align: left;
+    padding: 8px;
+    width: 300px;
+  }
+  
+tr:nth-child(even) {
+    background-color: #dddddd;
+    color: #13232f;
+  }
+
+table, th, td {
+    border: 1px solid white;
+  }
 
 .news{
     grid-area: c;
@@ -130,7 +159,8 @@
     border-radius: 15px;
     margin: 10px;
     height: calc( 100% - 70px );
-    width: 100%;
+    width: 350px;
+    overflow: auto;
 }
 
 #download_button{
@@ -141,6 +171,8 @@
     background-color: grey;
 }
 
+
+
 @media only screen and (max-width: 1024px) and (min-width: 512px){
     .container {
         grid-template-areas: 
@@ -150,6 +182,9 @@
     }
     .db_view_container{
         height: 95%;
+    }
+    .news_container{
+        width: 100%;
     }
     
 }
@@ -165,6 +200,9 @@
     }
     .db_view_container{
         height: 95%;
+    }
+    .news_container{
+        width: 100%;
     }
     
 }
