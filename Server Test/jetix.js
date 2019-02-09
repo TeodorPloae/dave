@@ -19,7 +19,11 @@ formular.addEventListener('submit', async (e) => {
 
     JSONresult["userData"]["aesComponents"] = encrdata;
     JSONresult["ownerData"]["uid"] = uidJsonToArray(encryptedUID);
-    JSONresult["ownerData"]["siteName"] = "jetix.ro"; //window.location.hostname
+
+    var siteName = "jetix.ro"; //window.location.hostname
+    siteName = siteName.replace('.','_');
+
+    JSONresult["ownerData"]["siteName"] = siteName;
 
     var data = new FormData(e.target);
 

@@ -1,8 +1,7 @@
 const logout_button = document.getElementById("logout_button");
 const download_button = document.getElementById("download_button");
 const link = document.getElementById("download_link");
-const db_select = document.getElementById("DB_Select");
-const site_name = document.getElementById("site_name");// not in html atm
+
 var readDownload = true;
 var storage = firebase.storage();
 var pathReference = storage.ref('thefile.js');
@@ -107,13 +106,9 @@ function loadData(theUser) {
                             text = text.replace("{uid}", JSON.stringify(theUser.encryptedUid));
                             link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
 
-
                             download_button.disabled = false;
 
                             download_button.style.backgroundColor = "#1ab188";
-
-                            //getUserData(theUser);
-                            getUserSites(theUser);
                         })
                         .catch(e => console.log(e.message));
 
@@ -126,56 +121,6 @@ function loadData(theUser) {
             xhr.send();
         })
         .catch(e => console.log(e.message));
-}
-
-
-function getUserData(theUser, siteName) {
-    var request = new XMLHttpRequest();
-    if ('withCredentials' in request) {
-        request.open('POST', 'http://localhost:5016/getUserDataFromSiteName', true);
-        // Just like regular ol' XHR
-        request.onreadystatechange = function () {
-            if (request.readyState === 4) {
-                if (request.status >= 200 && request.status < 400) {
-                    // JSON.parse(request.responseText) etc.
-                    var JsonResponse = JSON.parse(request.response);
-
-                    var userData = {};
-                    var atributes = new Set();
-
-                    Object.keys(JsonResponse).forEach( async function(timeStamp) {
-                        let aesComponents = JsonResponse[timeStamp]["aesComponents"];
-
-                        delete JsonResponse[timeStamp]["aesComponents"];
-
-                        aesComponents = await decryptUserAEScomponents(aesComponents, theUser.privateKey);
-
-                        var currentUserData = {};
-                        Object.keys(JsonResponse[timeStamp]).forEach( async function (key) {
-                            currentUserData[key] = await aesDecrypt(
-                                JsonResponse[timeStamp][key], 
-                                aesComponents.key,
-                                aesComponents.iv
-                                );
-                            atributes.add(key);
-                        });
-                        userData[timeStamp] = currentUserData;
-                    });
-                    //return userData
-                    userData["attributes"] = atributes;
-                    console.log(userData);
-                } else {
-                    // Handle error case
-                    console.log("error at getUserData from server!");
-                }
-                
-            }
-        };
-        request.setRequestHeader('Content-type', 'text/plain; charset=utf-8');
-        let data = JSON.stringify({"uid" : theUser.encryptedUid, "siteName" : siteName});
-        request.send(data);
-    }
-
 }
 
 async function aesDecrypt(data, key, iv) {
