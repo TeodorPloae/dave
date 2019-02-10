@@ -103,6 +103,8 @@
     margin: 10px; 
     height: calc( 100% - 70px );
     overflow: auto;
+    width: 100%;
+    
  
 }
 
