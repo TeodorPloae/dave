@@ -55,6 +55,7 @@ app.post('/', function (req, res) {
     let userTimestamp = req.body.userTimestamp;
 
     if (req.body.ownerData.uid) {
+        res.sendStatus(200);
         webcrypto.subtle.decrypt(
             {
                 name: "RSA-OAEP",
@@ -78,20 +79,16 @@ app.post('/', function (req, res) {
             })
             .catch(e => console.log(e.message));
     } else {
-        res.send(500);
+        res.sendStatus(500);
     }
 });
 
 app.get('/getPublicKey', function (req, res) {
-
-    console.log("am primit cv de la dashboard");
     res.json(publicKey);
-    console.log("am trimis cv la dashboard");
-
 });
 
 app.listen(5016, function () {
-    console.log('Example app listening on port 5016.');
+    console.log('Server is up and runnit at port 5016.');
 });
 
 function uidJsonToArray(json) {
@@ -112,7 +109,6 @@ function uidJsonToArray(json) {
 //   }
 
 app.post('/getUserDataFromSiteName', function (req, res) {
-
     let uidArray = uidJsonToArray(req.body.uid);
     let siteName = req.body.siteName;
 
@@ -134,13 +130,12 @@ app.post('/getUserDataFromSiteName', function (req, res) {
 
                 firebase.database().ref('users/' + decryptedUid + '/sites/' + siteName).once('value')
                     .then(function (snapshot) {
-                        console.log(snapshot.val());
                         res.json(snapshot.val());
                     })
                     .catch(e => console.log(e.message));
             })
             .catch(e => console.log(e.message));
     } else {
-        res.send(500);
+        res.sendStatus(500);
     }
 });

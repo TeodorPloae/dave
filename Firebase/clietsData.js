@@ -4,6 +4,7 @@ const site_db_view = document.getElementById("site_db_view");
 function setSelectDB(theUser) {
     firebase.database().ref('/users/' + theUser.uid + '/sites').once('value')
         .then( (snapshot) => {
+            if (snapshot != null){
 
             Object.keys(snapshot.val()).forEach(function(siteName) {
                 siteName = siteName.replace('_','.');
@@ -12,12 +13,15 @@ function setSelectDB(theUser) {
                 option.innerHTML = siteName;
                 db_button_select.appendChild(option);
             })
-
-
             db_button_select.disabled = false;
             db_button_select.style.backgroundColor = "#1ab188";
+        } 
+            
         })
-        .catch(e => console.log(e.message));
+        .catch(e => {
+            db_button_select.disabled = true;
+            console.log(e.message)
+        });
 }
 
 db_button_select.addEventListener("change", e => {
@@ -26,11 +30,11 @@ db_button_select.addEventListener("change", e => {
     var request = new XMLHttpRequest();
     if ('withCredentials' in request) {
         request.open('POST', 'http://localhost:5016/getUserDataFromSiteName', true);
-        // Just like regular ol' XHR
+
         request.onreadystatechange = function () {
             if (request.readyState === 4) {
                 if (request.status >= 200 && request.status < 400) {
-                    // JSON.parse(request.responseText) etc.
+
                     var JsonResponse = JSON.parse(request.response);
                     
                     var userData = {};
