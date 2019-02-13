@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html property="https://schema.org/ScholarlyArticle">
+<html property="https://schema.org/ScholarlyArticle" lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -9,14 +9,13 @@
 </head>
 
 <body prefix="schema: http://schema.org">
-    <header>
-        <h1>Dave</h1>
-    </header>
+    <h1>Dave</h1>
 
-    <div role="Authors List">
+    <section>
+        <h2>Authors</h2>
         <dl itemscope itemtype="sa:AuthorsList">
-            <dt>Authors</dt>
-            <dd itemtype="sa:ContributorRole" itemprop="schema:author">
+            <dt>Links to github:</dt>
+            <dd itemscope itemtype="sa:ContributorRole" itemprop="schema:author">
                 <meta itemprop="schema:givenName" content="Teodor">
                 <meta property="schema:familyName" content="Ploae">
                 <a property="schema:name" href="https://github.com/TeodorPloae">Teodor Ploae</a>
@@ -32,38 +31,40 @@
             <h2>Affiliations</h2>
             <ul>
                 <li id="sa">
-                <span typeof="schema:Organization" resource="http://www.info.uaic.ro/bin/Admission/Admission?language=ro">
-                    <span property="schema:name">Faculty of computer science</span>,
-                    <span property="schema:parentOrganization">
-                    <span typeof="schema:Organization">
-                        <span property="schema:name">CLIW</span>
-                        —
-                        <span property="schema:location" typeof="schema:Place">
-                            <span property="schema:addressLocality">IS</span>,
-                            <span property="schema:addressCountry">RO</span>
-                        </span>
+                    <span typeof="schema:Organization"
+                        resource="http://www.info.uaic.ro/bin/Admission/Admission?language=ro">
+                        <span property="schema:name">Faculty of computer science</span>,
+                        <span property="schema:parentOrganization">
+                            <span typeof="schema:Organization">
+                                <span property="schema:name">CLIW</span>
+                                —
+                                <span property="schema:location" typeof="schema:Place">
+                                    <span property="schema:addressLocality">IS</span>,
+                                    <span property="schema:addressCountry">RO</span>
+                                </span>
+                            </span>
                         </span>
                     </span>
-                    </span>
-                </span>
+
                 </li>
             </ul>
         </section>
-            
-    </div> 
 
-    <section typeof="sa:Abstract" id="abstract" role="doc-abstract">
+    </section>
+
+    <section typeof="sa:Abstract">
         <h2 property="schema:title"><span>1. Abstract</span></h2>
         <p>
             Dave (data vaults on web) wants to enchance the security of the data
             transfered and stored in the on-line enviroment. Therefore, the owner of a website
             wants his stite's forms data to be stored securely so he will integrate in his site(s)
-            a JS file (downloaded from our website), file wich will encrypt the form data then send it 
+            a JS file (downloaded from our website), file wich will encrypt the form data then send it
             to the server to be stored. <br><br>
             The user will create an account on our site. At that moment, an alghoritm will link
             his data to a <a href="https://ro.wikipedia.org/wiki/RSA">RSA</a> set of keys. When
             logged in, the user can request a <b>javascript</b> chunk of code that he can insert
-            in his form-page so that the sent data will be cripted with the <a href="https://ro.wikipedia.org/wiki/RSA">AES</a>
+            in his form-page so that the sent data will be cripted with the <a
+                href="https://ro.wikipedia.org/wiki/RSA">AES</a>
             alghoritm, using the RSA key. The user can also view the data that had passed his
             form and was successsfully encripted and stored in the data base.
         </p>
@@ -72,32 +73,35 @@
     <section id="proj-specifics">
         <h2>2. How to use </h2>
 
-        <h3 >2.1 LogIn/SignUp Page</h3>
+
         <section>
+            <h3>2.1 LogIn/SignUp Page</h3>
             <p>
-              On the first page you will encounter a signUp/logIn module. Here you will enter your credentials
-              for signing/logging in. <br><br>
-              <img  src="https://i.imgur.com/9rIgxhA.gif">
+                On the first page you will encounter a signUp/logIn module. Here you will enter your credentials
+                for signing/logging in. <br><br>
+                <img src="https://i.imgur.com/9rIgxhA.gif" alt="signUp/logIn module">
             </p>
         </section>
-        <h3 >2.2 Dashboard Page</h3>
+
         <section>
+            <h3>2.2 Dashboard Page</h3>
             <p>
-               After you log in, you will be redirected to your Dashboard Page. Here you can download your
-               JS File from the bottom-right side of he page:<br><br>
-               <img  src="https://i.imgur.com/f6jekpu.png" height="350"> <br><br>
-               After you put the file in your site's sources, some form data needs to be entered on your site
-               for it to be displayed in the specified DataBase Selector. <br>
-               After some data is entered in your site(s) forms, you can see your database for each one of those
-               using the selector:<br><br>
-               <img  src="https://i.imgur.com/RP8T3RB.gif"> <br><br>
+                After you log in, you will be redirected to your Dashboard Page. Here you can download your
+                JS File from the bottom-right side of he page:<br><br>
+                <img src="https://i.imgur.com/f6jekpu.png" height="350" alt="Download button"> <br><br>
+                After you put the file in your site's sources, some form data needs to be entered on your site
+                for it to be displayed in the specified DataBase Selector. <br>
+                After some data is entered in your site(s) forms, you can see your database for each one of those
+                using the selector:<br><br>
+                <img src="https://i.imgur.com/RP8T3RB.gif" alt="selector"> <br><br>
                 You can also see the new Updates on the JS File (or whether or not you have to donload it again),
                 on our website as well and of course updates on how your data is stored/encrypted.
             </p>
         </section>
-        
-        
-       </section>
+
+
+    </section>
 
 </body>
+
 </html>
