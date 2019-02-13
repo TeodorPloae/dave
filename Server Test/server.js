@@ -99,15 +99,6 @@ function uidJsonToArray(json) {
     return ret
 };
 
-//      {
-//     name: "RSA-OAEP",
-//     modulusLength: 1024,
-//     publicExponent: new Uint8Array([1, 0, 1]),
-//     hash: {
-//       name: "SHA-1"
-//     }
-//   }
-
 app.post('/getUserDataFromSiteName', function (req, res) {
     let uidArray = uidJsonToArray(req.body.uid);
     let siteName = req.body.siteName;
